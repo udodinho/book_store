@@ -58,3 +58,26 @@ func init() {
 	fmt.Println("Database connected successfully")
 	
 }
+
+func(b *Books) CreateBook() (*Books, error) {
+	DB.Create(&b)
+	return b, nil
+}
+
+func GetAllBooks() ([]Books, error) {
+	var Books []Books
+	DB.Find(&Books)
+	return Books, nil
+}
+
+func GetBookbyID(id int64) (*Books, *gorm.DB, error) {
+	var book Books
+	db := DB.Where("id=?", id).First(&book)
+	return &book, db, nil
+}
+
+func DeleteBook(id int64) (Books, error) {
+	var book Books
+	 DB.Where("id", id).Delete(book)
+	return book, nil
+}
