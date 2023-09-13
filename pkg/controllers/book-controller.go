@@ -1,15 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/udodinho/bookstore/pkg/models"
 )
-
-// var NewBook *models.Books
 
 func CreateBook(context *fiber.Ctx) error {
 	newBook := &models.Books{}
@@ -68,7 +65,6 @@ func GetBook(context *fiber.Ctx) error {
 
 	bks, _, err := models.GetBookbyID(int64(bkID))
 	
-	fmt.Println("DB", int(bks.ID))
 	if bkID != int(bks.ID) || int(bks.ID) < 1 {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "No book with id", "data":bkID})
