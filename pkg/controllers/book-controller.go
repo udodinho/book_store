@@ -16,7 +16,7 @@ func CreateBook(context *fiber.Ctx) error {
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Request failed"})
-			return err
+		return err
 	}
 
 	bk, err := newBook.CreateBook()
@@ -24,14 +24,14 @@ func CreateBook(context *fiber.Ctx) error {
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Could not create book"})
-			return err
+		return err
 	}
 
 	context.Status(http.StatusCreated).JSON(&fiber.Map{
-		"message":"Book has been created successfully",
-		"data":bk,
+		"message": "Book has been created successfully",
+		"data":    bk,
 	})
-		
+
 	return nil
 
 }
@@ -42,14 +42,14 @@ func GetAllBooks(context *fiber.Ctx) error {
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Could not fetch books"})
-			return err
+		return err
 	}
 
 	context.Status(http.StatusOK).JSON(&fiber.Map{
-		"message":"Books fetched successfully",
-		"data":bks,})
+		"message": "Books fetched successfully",
+		"data":    bks})
 
-		return nil
+	return nil
 }
 
 func GetBook(context *fiber.Ctx) error {
@@ -59,29 +59,29 @@ func GetBook(context *fiber.Ctx) error {
 
 	if err != nil {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
-			"message":"Id does not exist"})
-			return nil
+			"message": "Id does not exist"})
+		return nil
 	}
 
 	bks, _, err := models.GetBookbyID(int64(bkID))
-	
+
 	if bkID != int(bks.ID) || int(bks.ID) < 1 {
 		context.Status(http.StatusUnprocessableEntity).JSON(
-			&fiber.Map{"message": "No book with id", "data":bkID})
-			return err
-		}
-		
-		if err != nil {
+			&fiber.Map{"message": "No book with id", "data": bkID})
+		return err
+	}
+
+	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Could not fetch book"})
-			return err
+		return err
 	}
 
 	context.Status(http.StatusOK).JSON(&fiber.Map{
-		"message":"Book fetched successfully",
-		"data":bks,})
+		"message": "Book fetched successfully",
+		"data":    bks})
 
-		return nil
+	return nil
 }
 
 func UpdateBook(context *fiber.Ctx) error {
@@ -92,7 +92,7 @@ func UpdateBook(context *fiber.Ctx) error {
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Request failed"})
-			return err
+		return err
 	}
 
 	id := context.Params("id")
@@ -101,22 +101,22 @@ func UpdateBook(context *fiber.Ctx) error {
 
 	if err != nil {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
-			"message":"Id does not exist"})
-			return nil
+			"message": "Id does not exist"})
+		return nil
 	}
 
 	updatedBook, db, err := models.GetBookbyID(int64(bkID))
 
 	if bkID != int(updatedBook.ID) || int(updatedBook.ID) < 1 {
 		context.Status(http.StatusUnprocessableEntity).JSON(
-			&fiber.Map{"message": "No book with id", "data":bkID})
-			return err
-		}
+			&fiber.Map{"message": "No book with id", "data": bkID})
+		return err
+	}
 
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Could not fetch book"})
-			return err
+		return err
 	}
 
 	if *updateBook.Author != "" {
@@ -134,10 +134,10 @@ func UpdateBook(context *fiber.Ctx) error {
 	db.Save(&updatedBook)
 
 	context.Status(http.StatusOK).JSON(&fiber.Map{
-		"message":"Book updated successfully",
-		"data":updatedBook,})
+		"message": "Book updated successfully",
+		"data":    updatedBook})
 
-		return nil
+	return nil
 }
 
 func DeleteBook(context *fiber.Ctx) error {
@@ -145,35 +145,35 @@ func DeleteBook(context *fiber.Ctx) error {
 
 	if id == "" {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
-			"message":"Id cannot be empty", "data":id})
-			return nil
+			"message": "Id cannot be empty", "data": id})
+		return nil
 	}
 
 	bkID, err := strconv.Atoi(id)
 
 	if err != nil {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
-			"message":"Id does not exist"})
-			return nil
+			"message": "Id does not exist"})
+		return nil
 	}
-	
+
 	bks, err := models.DeleteBook(int64(bkID))
 
 	if bkID != int(bks.ID) || int(bks.ID) < 1 {
 		context.Status(http.StatusUnprocessableEntity).JSON(
-			&fiber.Map{"message": "No book with id", "data":bkID})
-			return err
-		}
+			&fiber.Map{"message": "No book with id", "data": bkID})
+		return err
+	}
 
 	if err != nil {
 		context.Status(http.StatusUnprocessableEntity).JSON(
 			&fiber.Map{"message": "Could not delete book"})
-			return err
+		return err
 	}
 
 	context.Status(http.StatusOK).JSON(&fiber.Map{
-		"message":"Book deleted successfully",
-		"data":bks,})
+		"message": "Book deleted successfully",
+		"data":    bks})
 
-		return nil
+	return nil
 }
