@@ -11,20 +11,19 @@ import (
 )
 
 type Books struct {
-	ID uint			`gorm:"primarykey;autoIncrement" json:"id"`
-	Author *string	`json:"author"`
-	Title *string	`json:"title"`
-	Publisher *string	`json:"publisher"`
+	ID        uint    `gorm:"primarykey;autoIncrement" json:"id"`
+	Author    *string `json:"author"`
+	Title     *string `json:"title"`
+	Publisher *string `json:"publisher"`
 }
 
 var DB *gorm.DB
 
 func MigrateBooks(db *gorm.DB) error {
-	err := db.AutoMigrate(&Books{}) 
+	err := db.AutoMigrate(&Books{})
 
 	return err
 }
-
 
 func init() {
 	err := godotenv.Load(".env")
@@ -33,14 +32,13 @@ func init() {
 		log.Fatal(err)
 	}
 
-	configFile := &config.Config{ 
-		Host: os.Getenv("DB_HOST"),
-		Port: os.Getenv("DB_PORT"),
+	configFile := &config.Config{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
 		Password: os.Getenv("DB_PASS"),
-		User: os.Getenv("DB_USER"),
-		DBName: os.Getenv("DB_NAME"),
-		SSLMode: os.Getenv("DB_SSLMODE"),
-
+		User:     os.Getenv("DB_USER"),
+		DBName:   os.Getenv("DB_NAME"),
+		SSLMode:  os.Getenv("DB_SSLMODE"),
 	}
 	db, err := config.Connect(configFile)
 
@@ -56,10 +54,10 @@ func init() {
 
 	DB = db
 	fmt.Println("Database connected successfully")
-	
+
 }
 
-func(b *Books) CreateBook() (*Books, error) {
+func (b *Books) CreateBook() (*Books, error) {
 	DB.Create(&b)
 	return b, nil
 }
@@ -78,6 +76,6 @@ func GetBookbyID(id int64) (*Books, *gorm.DB, error) {
 
 func DeleteBook(id int64) (Books, error) {
 	var book Books
-	 DB.Where("id", id).Delete(book)
+	DB.Where("id", id).Delete(book)
 	return book, nil
 }
