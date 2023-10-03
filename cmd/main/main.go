@@ -9,15 +9,16 @@ import (
 )
 
 func main() {
-	
+
 	port := ":3000"
-	
+
 	r := routes.Repository{
 		DB: models.DB,
 	}
-	
+
 	app := fiber.New()
 	r.SetupRoutes(app)
+	
 	fmt.Println("Server started listening on port", port)
 	app.Listen(port)
 }
