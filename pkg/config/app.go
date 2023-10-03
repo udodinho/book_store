@@ -8,12 +8,12 @@ import (
 )
 
 type Config struct {
-	Host string
-	Port string
-	User string
+	Host     string
+	Port     string
+	User     string
 	Password string
-	DBName string
-	SSLMode string
+	DBName   string
+	SSLMode  string
 }
 
 func Connect(config *Config) (*gorm.DB, error) {
