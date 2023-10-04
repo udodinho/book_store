@@ -18,7 +18,7 @@ func main() {
 
 	app := fiber.New()
 	r.SetupRoutes(app)
-	
+
 	fmt.Println("Server started listening on port", port)
 	app.Listen(port)
 }
